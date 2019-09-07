@@ -31,11 +31,12 @@ const pageContentSchema = mongoose.Schema({
 const Post = mongoose.model("Post", postSchema);
 const PageContent = mongoose.model("pageContent", pageContentSchema);
 
-// const homeStartingContent = new PageContent({
-// 	name: "home",
-// 	content: "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing."
 
-// });
+const homeStartingContent = new PageContent({
+	name: "home",
+	content: "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing."
+
+});
 
 // const aboutContent = new PageContent({
 // 	name: "about",
@@ -51,29 +52,17 @@ const PageContent = mongoose.model("pageContent", pageContentSchema);
 // 	if (err) {console.log(err);}
 // });
 
+
+
 app.get("/", (req, res) => {
 
-
-	const homeStartingContent = async function () {
-
-		await PageContent.findOne({name: "home"}, (err, foundContent) => {
-		if (!err) {
-			homeContent =  foundContent.content;
-		} else {
-			return err;
-		}
-		});
-	};
-
-
-	console.log(homeContent);
 
 	Post.find({}, (err, foundPosts) => {
 
 		if (!err) {
 		// 	//render
 			res.render("home", {
-			homeContent: homeContent, 
+			homeContent: homeStartingContent.content, 
 			posts: foundPosts,
 			
 			});
