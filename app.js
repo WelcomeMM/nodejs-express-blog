@@ -17,7 +17,6 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-// let posts = [];
 
 //DATABASE PART
 
@@ -70,18 +69,37 @@ app.get("*/posts/:postName", function (req, res) {
 	 //using lodash to lower case the first letter.
 	const postNameParams = _.lowerCase(req.params.postName); //using lodash "_." to replace the "-" by a " " white  space. 
 
-	posts.forEach(function (post) {
-		const lastPostsElement = _.lowerCase(post.titleContent);
 
-		if (postNameParams === lastPostsElement) {
-			res.render("post", {
-				title: post.titleContent,
-				content: post.postContent
+	Post.find({}, (err, foundPosts) => {
+		if(!err) {
+			// render
+			foundPosts.forEach(post => {
+				const lastPostsElement = _.lowerCase(post.title);
+				if (postNameParams === lastPostsElement) {
+					res.render("post", {
+						title: post.title,
+						content: post.content
+					});
+
+				} 
+			
 			});
-		}
+			
 
+		} else {
+			console.log(err);
+		}
 	});
 
+	// foundPosts.forEach(function (post) {
+	// 	
+
+	// 	
+	// 		res.render("post", {
+	// 			title: post.titleContent,
+	// 			content: post.postContent
+	// 		});
+	// 	}
 });
 
 
