@@ -13,19 +13,19 @@
 <% }) %>
 
 
-<form action="<%= title %>" method="post">
+<form action="<%= title %>" method="post" class="form-group">
 
     <label for="authorName">Name</label>
-    <input type="text" name="authorName">
+    <input type="text" name="authorName" class="form-control comment-form" >
 
     <label for="comment">Comment</label>
-    <input type="text" name="comment">
+    <textarea type="text" name="comment" class="form-control comment-form" cols="20" rows="5"></textarea>
 
-    <button type="submit">Post comment</button>
+    <button type="submit" class="btn btn-primary">Post comment</button>
 
     
 
 </form>
 
 
-<%- include ./partials/footer -%>
+<!-- <%- include ./partials/footer -%> -->
