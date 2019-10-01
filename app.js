@@ -21,26 +21,31 @@ mongoose.connect("mongodb://localhost:27017/blogDB", {useNewUrlParser:true});
 const postSchema = mongoose.Schema({
 	title: String,
 	content: String,
+	comments: [{
+		authorName: String,
+		comment: String,
+		dateOfCreation: {type: Date, required: true, default: Date.now}
+	}]
+	
 });
 
 const pageContentSchema = mongoose.Schema({
 	name: String,
 	content: String,
-	
 });
 
-const commentSchema = mongoose.Schema({
+// const commentSchema = mongoose.Schema({
 
-	article: String,
-	authorName: String,
-	comment: String,
-	dateOfCreation: {type: Date, required: true, default: Date.now}
+// 	article: String,
+// 	authorName: String,
+// 	comment: String,
+// 	dateOfCreation: {type: Date, required: true, default: Date.now}
 
-});
+// });
 
 const Post = mongoose.model("Post", postSchema);
 const PageContent = mongoose.model("pageContent", pageContentSchema);
-const Comment = mongoose.model("Comment", commentSchema);
+// const Comment = mongoose.model("Comment", commentSchema);
 
 
 const homeStartingContent = new PageContent({
@@ -126,6 +131,7 @@ app.route("*/posts/:postName")
 						res.render("post", {
 							title: post.title,
 							content: post.content,
+							comments: post.comments
 
 						});
 
@@ -140,16 +146,33 @@ app.route("*/posts/:postName")
 		});
 	})
 
+	
 	.post((req, res) => {
 	
-		const comment = new Comment({
-			article : req.params.postName,
+		const newComment = {
 			authorName: req.body.authorName,
 			comment: req.body.comment
+		};
+
+		Post.find({}, (err, foundPosts) => {
+
+			foundPosts.forEach(post => {
+				if (!err) {
+					if (post.title === req.params.postName) {
+						
+						post.comments.push(newComment);
+
+						post.save();
+					}
+				} else {
+					console.log(err);
+				}
+			});
+
 		});
 
-		console.log("Post : ");
-		console.log(comment);
+
+		res.redirect(`*/posts/${req.params.postName}`);
 });
 
 
