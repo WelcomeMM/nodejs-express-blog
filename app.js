@@ -110,50 +110,49 @@ app.get("/compose", function (req, res) {
 	
 });
 
-app.get("*/posts/:postName", function (req, res) {
+app.route("*/posts/:postName")
 
-	 //using lodash to lower case the first letter.
-	const postNameParams = _.lowerCase(req.params.postName); //using lodash "_." to replace the "-" by a " " white  space. 
+	.get(function (req, res) {
 
-	console.log(req.params);
+		//using lodash to lower case the first letter.
+		const postNameParams = _.lowerCase(req.params.postName); //using lodash "_." to replace the "-" by a " " white  space. 
+
+		Post.find({}, (err, foundPosts) => {
+			if(!err) {
+				// render
+				foundPosts.forEach(post => {
+					const lastPostsElement = _.lowerCase(post.title);
+					if (postNameParams === lastPostsElement) {
+						res.render("post", {
+							title: post.title,
+							content: post.content,
+
+						});
+
+					} 
+				
+				});
+				
+
+			} else {
+				console.log(err);
+			}
+		});
+	})
+
+	.post((req, res) => {
 	
-	Post.find({}, (err, foundPosts) => {
-		if(!err) {
-			// render
-			foundPosts.forEach(post => {
-				const lastPostsElement = _.lowerCase(post.title);
-				if (postNameParams === lastPostsElement) {
-					res.render("post", {
-						title: post.title,
-						content: post.content
-					});
+		const comment = new Comment({
+			article : req.params.postName,
+			authorName: req.body.authorName,
+			comment: req.body.comment
+		});
 
-				} 
-			
-			});
-			
-
-		} else {
-			console.log(err);
-		}
-	});
+		console.log("Post : ");
+		console.log(comment);
 });
 
-app.post("*/posts/:postName", (req, res) => {
-	
 
-	const comment = new Comment({
-		article : req.params.postName,
-		authorName: req.body.authorName,
-		comment: req.body.comment
-	});
-
-	console.log(req.params);
-
-
-
-
-});
 
 app.post("/compose", function (req, res) {
 	
