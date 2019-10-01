@@ -3,5 +3,19 @@
 <h2><%= title %></h2>
 <p><%= content %></p>
 
+<form action="*/posts/:postName" method="POST">
+
+    <label for="authorName">Name</label>
+    <input type="text" name="authorName">
+
+    <label for="comment">Comment</label>
+    <input type="text" name="comment">
+
+    <button type="submit">Post comment</button>
+
+    
+
+</form>
+
 
 <%- include ./partials/footer -%>

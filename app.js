@@ -20,16 +20,27 @@ mongoose.connect("mongodb://localhost:27017/blogDB", {useNewUrlParser:true});
 
 const postSchema = mongoose.Schema({
 	title: String,
-	content: String
+	content: String,
 });
 
 const pageContentSchema = mongoose.Schema({
 	name: String,
-	content: String
+	content: String,
+	
+});
+
+const commentSchema = mongoose.Schema({
+
+	article: String,
+	authorName: String,
+	comment: String,
+	dateOfCreation: {type: Date, required: true, default: Date.now}
+
 });
 
 const Post = mongoose.model("Post", postSchema);
 const PageContent = mongoose.model("pageContent", pageContentSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 
 const homeStartingContent = new PageContent({
@@ -55,7 +66,6 @@ const homeStartingContent = new PageContent({
 
 
 app.get("/", (req, res) => {
-
 
 	Post.find({}, (err, foundPosts) => {
 
@@ -105,7 +115,8 @@ app.get("*/posts/:postName", function (req, res) {
 	 //using lodash to lower case the first letter.
 	const postNameParams = _.lowerCase(req.params.postName); //using lodash "_." to replace the "-" by a " " white  space. 
 
-
+	console.log(req.params);
+	
 	Post.find({}, (err, foundPosts) => {
 		if(!err) {
 			// render
@@ -126,19 +137,23 @@ app.get("*/posts/:postName", function (req, res) {
 			console.log(err);
 		}
 	});
-
-	// foundPosts.forEach(function (post) {
-	// 	
-
-	// 	
-	// 		res.render("post", {
-	// 			title: post.titleContent,
-	// 			content: post.postContent
-	// 		});
-	// 	}
 });
 
+app.post("*/posts/:postName", (req, res) => {
+	
 
+	const comment = new Comment({
+		article : req.params.postName,
+		authorName: req.body.authorName,
+		comment: req.body.comment
+	});
+
+	console.log(req.params);
+
+
+
+
+});
 
 app.post("/compose", function (req, res) {
 	
