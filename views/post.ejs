@@ -3,27 +3,33 @@
 <h2><%= title %></h2>
 <p><%= content %></p>
 
+<hr class="mt-3">
 <h3>Comments</h3>
 
 <% comments.forEach( comment => { %>
 
-    <p> <%= comment.authorName %> </p>
-    <p> <%= comment.comment %> </p>
-
+<div class="media">
+    <img src="" alt="" class="mr-3">
+    <div class="media-body">
+        <h4> <%= comment.authorName %> </h4>
+        <p> <%= comment.comment %> </p>
+    </div>
+</div>
 <% }) %>
 
-
+<hr>
+<h3>Add comments</h3>
 <form action="<%= title %>" method="post" class="form-group">
 
     <label for="authorName">Name</label>
-    <input type="text" name="authorName" class="form-control comment-form" >
+    <input type="text" name="authorName" class="form-control comment-form">
 
     <label for="comment">Comment</label>
     <textarea type="text" name="comment" class="form-control comment-form" cols="20" rows="5"></textarea>
 
     <button type="submit" class="btn btn-primary">Post comment</button>
 
-    
+
 
 </form>
 
